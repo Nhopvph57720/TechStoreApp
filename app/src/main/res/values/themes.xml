@@ -1,0 +1,45 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TechStoreApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.TechStoreApp" parent="Base.Theme.TechStoreApp" />
+    <style name="rounded_corner_10">
+        <item name="cornerSize">10dp</item>
+    </style>
+    <style name="rounded_corner_12">
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="rounded_corner_16">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="rounded_corner_50">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/red_E00</item>
+        <item name="android:textColorPrimary">@color/black_333</item>
+        <item name="android:background">@color/white_000</item>
+    </style>
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+    <style name="CustomAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlActivated">@color/red_E00</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButton</item>
+    </style>
+
+    <style name="PositiveButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black_333</item>
+    </style>
+
+    <style name="NegativeButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/white_9A9</item>
+    </style>
+</resources>

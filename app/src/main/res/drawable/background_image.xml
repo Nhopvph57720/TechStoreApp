@@ -1,0 +1,13 @@
+<!-- background_image.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:src="@drawable/img_signup_bg"
+            android:gravity="center"/>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="#B7000000"/> <!-- Màu đen với độ mờ 50% -->
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="@drawable/background"
+
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="72dp">
+
+        <ImageView
+            android:id="@+id/imageview_logo"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/profile_icon"
+            android:src="@drawable/logoda1" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="12dp"
+                android:drawableTint="@color/white_000"
+                android:fontFamily="@font/be_vietnam_pro_light"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textColor="@color/white_000"
+                android:textColorHint="@color/white_000"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white_000"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="12dp"
+                android:drawableTint="@color/white_000"
+                android:fontFamily="@font/be_vietnam_pro_light"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textColor="@color/white_000"
+                android:textColorHint="@color/white_000"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/remember_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white_000"
+                android:fontFamily="@font/be_vietnam_pro_extralight"
+                android:text="Remember me"
+                android:textColor="#FFFFFF" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:fontFamily="@font/be_vietnam_pro_extralight"
+                android:gravity="center|right"
+                android:text="Forgot Password?"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:background="@drawable/cus_bgr_rounded_corner_10"
+            android:backgroundTint="@color/red_E3E"
+            android:fontFamily="@font/be_vietnam_pro_bold"
+            android:padding="12dp"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/white_000" />
+
+        <LinearLayout
+            android:id="@+id/btn_goToSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/be_vietnam_pro_regular"
+                android:text="Don't have an account? "
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/be_vietnam_pro_bold"
+                android:text="Sign Up"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
