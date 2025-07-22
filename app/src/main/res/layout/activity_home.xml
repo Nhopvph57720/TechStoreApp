@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.HomeActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:padding="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hãy chọn sản phẩm phù hợp \ndành cho bạn"
+                android:fontFamily="@font/be_vietnam_pro_semibold"
+                android:textSize="24.sp"
+                android:textColor="@color/black_333"/>
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:hint="Search recipes"
+                android:textColorHint="@color/white_1C1"
+                android:background="@drawable/cus_edt_stroke_9d9"
+                android:paddingHorizontal="12dp"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/be_vietnam_pro_light"
+                android:textColor="@color/black_333"/>
+            <LinearLayout
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xu hướng hiện tại 🔥"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:textSize="20sp"
+                    android:textColor="@color/black_333"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btn_see_all_trending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="See all"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:textAllCaps="false"
+                    android:textColor="@color/red_E00"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:drawableTint="@color/red_E00"
+                    android:drawablePadding="-6dp"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rcv_trending"/>
+            <LinearLayout
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Danh sách sản phẩm"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:textSize="20sp"
+                    android:textColor="@color/black_333"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btn_see_all_top100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="See all"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:textAllCaps="false"
+                    android:textColor="@color/red_E00"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:drawableTint="@color/red_E00"
+                    android:drawablePadding="-6dp"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rcv_top_100_recipe"/>
+            <LinearLayout
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lựa chọn tốt nhất"
+                    android:fontFamily="@font/be_vietnam_pro_semibold"
+                    android:textSize="20sp"
+                    android:textColor="@color/black_333"/>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+                <!--                <Button-->
+                <!--                    android:id="@+id/btn_see_all_popular_creator"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@color/transparent"-->
+                <!--                    android:text="See all"-->
+                <!--                    android:drawableEnd="@drawable/ic_arrow_right"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:textColor="@color/red_E00"-->
+                <!--                    android:fontFamily="@font/be_vietnam_pro_semibold"-->
+                <!--                    android:drawableTint="@color/red_E00"-->
+                <!--                    android:drawablePadding="-6dp"/>-->
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rcv_popular_creators"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

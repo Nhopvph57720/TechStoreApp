@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875617394018",
+    "project_id": "techstoreapp-de25c",
+    "storage_bucket": "techstoreapp-de25c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875617394018:android:78b66c85cc3da89ed8603b",
+        "android_client_info": {
+          "package_name": "com.example.techstoreapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9eGmSlFiAuD3O1Zz3uhlthhJCCeOJfPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

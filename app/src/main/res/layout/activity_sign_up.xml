@@ -93,7 +93,7 @@
             android:id="@+id/password_requirements_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password must be at least 8 characters with 1 uppercase letter and 1 digit."
+            android:text="Mật khẩu phải có ít nhất 6 ký tự."
             android:textColor="@color/white_000"
             android:textSize="14sp"/>
 
@@ -104,13 +104,12 @@
             android:id="@+id/sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up"
+            android:text="Đăng ký"
             android:background="@drawable/cus_bgr_rounded_corner_10"
             android:backgroundTint="@color/red_E3E"
             android:textColor="@color/white_000"
             android:padding="12dp"/>
         <LinearLayout
-            android:id="@+id/btn_goToLogin"
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -121,12 +120,13 @@
                 android:fontFamily="@font/be_vietnam_pro_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account? "
+                android:text="Bạn đã có tài khoản? "
                 android:textColor="@android:color/white"/>
             <TextView
+                android:id="@+id/btn_goToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="Đăng nhập"
                 android:fontFamily="@font/be_vietnam_pro_bold"
                 android:textColor="@android:color/white"/>
         </LinearLayout>

@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/white_000"
                 android:fontFamily="@font/be_vietnam_pro_extralight"
-                android:text="Remember me"
+                android:text="Nhớ mật khẩu"
                 android:textColor="#FFFFFF" />
 
             <RelativeLayout
@@ -99,7 +99,7 @@
                 android:layout_gravity="end"
                 android:fontFamily="@font/be_vietnam_pro_extralight"
                 android:gravity="center|right"
-                android:text="Forgot Password?"
+                android:text="Quên mật khẩu ?"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
 
@@ -112,12 +112,11 @@
             android:backgroundTint="@color/red_E3E"
             android:fontFamily="@font/be_vietnam_pro_bold"
             android:padding="12dp"
-            android:text="Login"
+            android:text="Đăng nhập"
             android:textAllCaps="false"
             android:textColor="@color/white_000" />
 
         <LinearLayout
-            android:id="@+id/btn_goToSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -129,14 +128,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/be_vietnam_pro_regular"
-                android:text="Don't have an account? "
+                android:text="Bạn chưa có tài khoản ? "
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/btn_goToSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/be_vietnam_pro_bold"
-                android:text="Sign Up"
+                android:text="Đăng ký"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>

@@ -25,16 +25,15 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Delay 3 giây rồi chuyển sang LoginActivity
+
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, LogInActivity.class);
             startActivity(intent);
 
-            // Áp dụng hiệu ứng chuyển màn hình
+
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-            finish(); // Kết thúc SplashActivity
+            finish();
         }, 3000);
-        // 3000 milliseconds = 3 giây
     }
 }
