@@ -1,5 +1,7 @@
 package com.example.techstoreapp.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +19,11 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.techstoreapp.Activity.ProductDetailActivity;
 import com.example.techstoreapp.Model.Product;
 import com.example.techstoreapp.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -39,9 +43,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+
         Product p = productList.get(position);
         holder.txtName.setText(p.name);
-        holder.txtPrice.setText("Giá: "+ p.price + " VNĐ");
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(p.price);
+        holder.txtPrice.setText("Giá: " + formattedPrice + " VNĐ");
+
 
         // Hiện ProgressBar trước khi load ảnh
         holder.pbLoadImg.setVisibility(View.VISIBLE);
@@ -66,6 +74,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     }
                 })
                 .into(holder.imgProduct);
+
+        holder.itemView.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("product", p); // p phải implements Serializable
+            context.startActivity(intent);
+        });
     }
 
     @Override

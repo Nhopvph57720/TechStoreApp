@@ -26,7 +26,8 @@
                 android:id="@+id/imgProduct"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerInside"
+                />
         </androidx.cardview.widget.CardView>
 
         <ProgressBar
@@ -40,13 +41,13 @@
     <!-- Card nằm sau để ảnh nổi lên trên -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardRoot"
-        android:layout_width="160dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="48dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
-        android:backgroundTint="#F5F5F5"
+        android:backgroundTint="#EDEDED"
         android:layout_marginBottom="20dp">
 
         <LinearLayout
@@ -57,13 +58,14 @@
             android:paddingBottom="12dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
             >
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Tên sản phẩm"
                 android:textSize="14sp"
                 android:textColor="#333333"
@@ -71,17 +73,18 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/txtPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giá: 0đ"
-                android:textSize="13sp"
-                android:textColor="#E00000"
-                android:layout_marginTop="4dp"
-                android:gravity="center" />
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginTop="15dp"
+                android:gravity="left" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
