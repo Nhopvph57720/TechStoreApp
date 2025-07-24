@@ -56,5 +56,29 @@
         <item name="android:layout_marginEnd">8dp</item>
     </style>
 
+    <style name="ProfileLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
+
+    <style name="ProfileInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#111111</item>
+        <item name="android:textColorHint">#999999</item>
+    </style>
+
+
+    <style name="CircleImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 
 </resources>

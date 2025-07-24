@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".Activity.UserProfile">
+
+    <!-- Scroll content -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigationView"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Avatar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_circle_image"
+                    app:shapeAppearanceOverlay="@style/CircleImage"
+                    android:scaleType="centerCrop"
+                    android:backgroundTint="#EEEEEE"
+                    android:contentDescription="Avatar"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chạm để đổi ảnh"
+                    android:textSize="14sp"
+                    android:textColor="@color/red_E00" />
+            </LinearLayout>
+
+            <!-- Tên -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:text="Họ và tên" />
+
+            <EditText
+                android:id="@+id/edtFullName"
+                style="@style/ProfileInput"
+                android:hint="Nhập tên của bạn" />
+
+            <!-- Email -->
+            <TextView style="@style/ProfileLabel"
+                android:text="Email" />
+            <EditText
+                android:id="@+id/edtEmail"
+                style="@style/ProfileInput"
+                android:hint="Nhập email"
+                android:inputType="textEmailAddress" />
+
+            <!-- Số điện thoại -->
+            <TextView style="@style/ProfileLabel"
+                android:text="Số điện thoại" />
+            <EditText
+                android:id="@+id/edtPhone"
+                style="@style/ProfileInput"
+                android:hint="Nhập số điện thoại"
+                android:inputType="phone" />
+
+            <!-- Địa chỉ -->
+            <TextView style="@style/ProfileLabel"
+                android:text="Địa chỉ" />
+            <EditText
+                android:id="@+id/edtAddress"
+                style="@style/ProfileInput"
+                android:hint="Nhập địa chỉ" />
+
+            <!-- Nút lưu -->
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="Lưu thay đổi"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/red_E00" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled" />
+</RelativeLayout>
