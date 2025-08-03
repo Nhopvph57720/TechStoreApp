@@ -9,9 +9,16 @@ public class FireBaseHelper {
                 .getInstance("https://techstoreapp-de25c-default-rtdb.asia-southeast1.firebasedatabase.app")
                 .getReference("products");
     }
+
     public static DatabaseReference getTrendingRef() {
         return FirebaseDatabase
                 .getInstance("https://techstoreapp-de25c-default-rtdb.asia-southeast1.firebasedatabase.app")
                 .getReference("trending");
+    }
+
+    public static DatabaseReference getUsersRef() {
+        return FirebaseDatabase
+                .getInstance("https://techstoreapp-de25c-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("users");
     }
 }
