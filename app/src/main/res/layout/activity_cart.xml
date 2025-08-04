@@ -38,6 +38,19 @@
                 android:nestedScrollingEnabled="false"
                 android:scrollbars="vertical" />
 
+            <!-- Người nhận và SĐT cùng dòng -->
+            <TextView
+                android:id="@+id/tvRecipientInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="👤 Người nhận: Nguyễn Văn A - 📞 0123456789"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:background="@drawable/bg_edittext"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp" />
+
+
             <!-- Địa chỉ giao hàng -->
             <TextView
                 android:id="@+id/tvDeliveryAddress"

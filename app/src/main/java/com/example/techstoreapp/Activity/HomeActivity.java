@@ -321,11 +321,36 @@ public class HomeActivity extends AppCompatActivity {
 //        DatabaseReference dbRef = FireBaseHelper.getProductsRef();
 //
 //        List<Product> sampleList = Arrays.asList(
-//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop"),
-//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe"),
-//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet"),
-//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím"),
-//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại")
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Laptop Dell XPS", 25000000, "https://via.placeholder.com/150", "Laptop","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "Tai nghe Sony", 7000000, "https://via.placeholder.com/150", "Tai nghe","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "iPad Air", 18000000, "https://via.placeholder.com/150", "Tablet","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Bàn phím cơ Razer", 2500000, "https://via.placeholder.com/150", "Bàn phím","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc"),
+//                new Product(null, "Điện thoại Samsung", 21000000, "https://via.placeholder.com/150", "Điện thoại","abc")
 //        );
 //
 //        for (Product p : sampleList) {
@@ -338,10 +363,5 @@ public class HomeActivity extends AppCompatActivity {
 //
 //        Toast.makeText(this, "Đã thêm dữ liệu theo danh mục!", Toast.LENGTH_SHORT).show();
 //    }
-
-
-
-
-
 
 }
