@@ -2,17 +2,33 @@ package com.example.techstoreapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
 import com.example.techstoreapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class UserProfile extends AppCompatActivity {
+    private EditText edtFullName, edtEmail, edtPhone, edtAddress;
+    private Button btnSave, btnOut;
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseRef;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +41,38 @@ public class UserProfile extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize Firebase
+        mAuth = FirebaseAuth.getInstance();
+        databaseRef = FireBaseHelper.getUsersRef();
+
+        // Check if user is logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // User not logged in, redirect to login
+            startActivity(new Intent(this, LogInActivity.class));
+            finish();
+            return;
+        }
+        currentUserId = currentUser.getUid();
+
+        // Initialize views
+        edtFullName = findViewById(R.id.edtFullName);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPhone = findViewById(R.id.edtPhone);
+        edtAddress = findViewById(R.id.edtAddress);
+        btnSave = findViewById(R.id.btnSave);
+        btnOut = findViewById(R.id.btnOut);
+
+        // Load user data
+        loadUserData();
+
+        // Set up button listeners
+        btnSave.setOnClickListener(v -> saveUserData());
+        btnOut.setOnClickListener(v -> showLogoutDialog());
+
+        // Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.nav_user); // <- Đánh dấu tab User
+        bottomNavigationView.setSelectedItemId(R.id.nav_user);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -40,11 +86,125 @@ public class UserProfile extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 return true;
             } else if (id == R.id.nav_user) {
-                // đang ở đây rồi
+                // Already here
                 return true;
             }
 
             return false;
         });
+    }
+
+    private void loadUserData() {
+        databaseRef.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    UserModel user = dataSnapshot.getValue(UserModel.class);
+                    if (user != null) {
+                        edtFullName.setText(user.name != null ? user.name : "");
+                        edtEmail.setText(user.email != null ? user.email : "");
+                        edtPhone.setText(user.phone != null ? user.phone : "");
+                        edtAddress.setText(user.address != null ? user.address : "");
+                    }
+                } else {
+                    Toast.makeText(UserProfile.this, "Không tìm thấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(UserProfile.this, "Lỗi tải dữ liệu: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveUserData() {
+        String name = edtFullName.getText().toString().trim();
+        String email = edtEmail.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+
+        // Validation
+        if (name.isEmpty()) {
+            edtFullName.setError("Nhập tên");
+            edtFullName.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            edtEmail.setError("Nhập email");
+            edtEmail.requestFocus();
+            return;
+        }
+
+        // Disable save button during update
+        btnSave.setEnabled(false);
+        btnSave.setText("Đang lưu...");
+
+        // Create updated user object với các field mới
+        UserModel updatedUser = new UserModel();
+        updatedUser.name = name;
+        updatedUser.email = email;
+        updatedUser.phone = phone;
+        updatedUser.address = address;
+
+        // Save to Firebase Realtime Database
+        databaseRef.child(currentUserId).setValue(updatedUser)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(UserProfile.this, "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
+                    resetSaveButton();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(UserProfile.this, "Lỗi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    resetSaveButton();
+                });
+    }
+
+    private void resetSaveButton() {
+        btnSave.setEnabled(true);
+        btnSave.setText("Lưu thay đổi");
+    }
+
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> logoutUser())
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void logoutUser() {
+        // Sign out from Firebase Auth
+        mAuth.signOut();
+
+        // Clear any saved preferences if needed
+        // SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        // prefs.edit().clear().apply();
+
+        Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+
+        // Redirect to login screen
+        Intent intent = new Intent(this, LogInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    // UserModel class đơn giản như ban đầu
+    public static class UserModel {
+        public String name;
+        public String email;
+        public String phone;
+        public String address;
+
+        public UserModel() {
+            // Firebase cần constructor rỗng
+        }
+
+        public UserModel(String name, String email) {
+            this.name = name;
+            this.email = email;
+        }
     }
 }
