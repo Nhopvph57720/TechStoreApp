@@ -101,6 +101,16 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="@color/red_E00" />
 
+            <Button
+                android:id="@+id/btnOut"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="Đăng Xuất"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/red_E00" />
+
         </LinearLayout>
     </ScrollView>
 

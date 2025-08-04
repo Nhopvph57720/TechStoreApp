@@ -53,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageview_logo);
 
         mAuth = FirebaseAuth.getInstance();
-        databaseRef = FireBaseHelper.getUsersRef(); // ✅ Sử dụng helper
+        databaseRef = FireBaseHelper.getUsersRef();
 
         Glide.with(this)
                 .load(R.drawable.logoda1)
@@ -89,6 +89,10 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
+        // Disable button during registration
+        btnSignUp.setEnabled(false);
+        btnSignUp.setText("Đang đăng ký...");
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = mAuth.getCurrentUser();
@@ -97,7 +101,9 @@ public class SignUpActivity extends AppCompatActivity {
                         UserModel userModel = new UserModel(name, email);
                         databaseRef.child(uid).setValue(userModel)
                                 .addOnSuccessListener(unused -> {
-                                    Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                                    // Sign out để user phải đăng nhập lại
+                                    mAuth.signOut();
+                                    Toast.makeText(this, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
@@ -105,6 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(this, "Lỗi ghi DB: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    resetSignUpButton();
                                 });
                     }
                 })
@@ -114,7 +121,13 @@ public class SignUpActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "Đăng ký thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
+                    resetSignUpButton();
                 });
+    }
+
+    private void resetSignUpButton() {
+        btnSignUp.setEnabled(true);
+        btnSignUp.setText("Đăng ký");
     }
 
     public static class UserModel {
