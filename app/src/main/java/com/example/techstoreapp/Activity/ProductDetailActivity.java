@@ -2,6 +2,7 @@ package com.example.techstoreapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -9,15 +10,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
+import com.example.techstoreapp.Model.CartItem;
 import com.example.techstoreapp.Model.Product;
 import com.example.techstoreapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProductDetailActivity extends AppCompatActivity {
     private ImageView imgDetail;
@@ -71,9 +82,53 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         btnAddToCart.setOnClickListener(v -> {
-            Toast.makeText(this, "Đã thêm " + quantity + " sản phẩm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
-            // TODO: Lưu vào DB/SharedPreferences nếu cần
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getCurrentUser().getUid();
+
+            String productId = product.getId();
+            DatabaseReference cartRef = FireBaseHelper.getCartRef(uid).child(productId);
+
+            cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int finalQuantity = quantity;
+
+                    if (snapshot.exists()) {
+                        CartItem existingItem = snapshot.getValue(CartItem.class);
+                        if (existingItem != null) {
+                            finalQuantity += existingItem.getQuantity(); // ✅ cộng dồn tại đây
+                        }
+                    }
+
+                    // ✅ Tạo CartItem mới với số lượng cập nhật
+                    CartItem updatedItem = new CartItem(
+                            productId,
+                            product.getName(),
+                            product.getPrice(),
+                            finalQuantity,
+                            product.getImageUrl()
+                    );
+
+                    cartRef.setValue(updatedItem)
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(ProductDetailActivity.this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("CART_DEBUG", "Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
+                                Toast.makeText(ProductDetailActivity.this, "Lỗi khi thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                            });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối giỏ hàng", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+
+
+
+
 
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);

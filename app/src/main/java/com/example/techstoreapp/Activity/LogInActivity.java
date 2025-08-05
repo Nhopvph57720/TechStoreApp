@@ -55,15 +55,17 @@ public class LogInActivity extends AppCompatActivity {
         btn_Login = findViewById(R.id.sign_in);
         edtEmail = findViewById(R.id.email);
         edtPassword = findViewById(R.id.password);
-
+        ////
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
         // Check if user is already logged in
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            // User is already signed in, redirect to HomeActivity
-            startActivity(new Intent(LogInActivity.this, HomeActivity.class));
-            finish();
-            return;
-        }
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if (currentUser != null) {
+//            // User is already signed in, redirect to HomeActivity
+//            startActivity(new Intent(LogInActivity.this, HomeActivity.class));
+//            finish();
+//            return;
+//        }
 
         btn_goToSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,9 +156,10 @@ public class LogInActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(LogInActivity.this, "Đăng nhập thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogInActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_LONG).show();
                     resetLoginButton();
                 });
+
     }
 
     private void resetLoginButton() {

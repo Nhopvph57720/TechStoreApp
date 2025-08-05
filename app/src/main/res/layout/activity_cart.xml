@@ -8,88 +8,93 @@
     android:background="@color/white_000"
     tools:context=".Activity.Cart">
 
-    <!-- Scrollable content -->
-    <ScrollView
+    <!-- RecyclerView chiếm toàn bộ phần còn lại phía trên -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvCartItems"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView">
+        android:layout_height="0dp"
+        android:layout_above="@+id/checkoutSection"
+        android:layout_alignParentTop="true"
+        android:padding="12dp"
+        android:clipToPadding="false" />
+
+    <!-- Phần thông tin + nút thanh toán -->
+    <LinearLayout
+        android:id="@+id/checkoutSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavigationView"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:elevation="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
-            <!-- Tiêu đề -->
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tvNameUser"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="🛒 Giỏ hàng của bạn"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="12dp" />
-
-            <!-- Danh sách sản phẩm -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvCartItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:scrollbars="vertical" />
-
-            <!-- Người nhận và SĐT cùng dòng -->
-            <TextView
-                android:id="@+id/tvRecipientInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="👤 Người nhận: Nguyễn Văn A - 📞 0123456789"
+                android:layout_weight="1"
+                android:text="👤 Nguyễn Văn A"
                 android:textSize="14sp"
                 android:textColor="#333333"
                 android:background="@drawable/bg_edittext"
                 android:padding="12dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginEnd="8dp" />
 
-
-            <!-- Địa chỉ giao hàng -->
             <TextView
-                android:id="@+id/tvDeliveryAddress"
-                android:layout_width="match_parent"
+                android:id="@+id/tvPhoneUser"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="📍 Địa chỉ giao hàng: 123 Nguyễn Trãi, Hà Nội"
+                android:layout_weight="1"
+                android:text="📞 0123456789"
                 android:textSize="14sp"
                 android:textColor="#333333"
                 android:background="@drawable/bg_edittext"
-                android:padding="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Tổng tiền -->
-            <TextView
-                android:id="@+id/tvTotalPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Số tiền cần thanh toán : 0 VNĐ"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="#E53935"
-                android:gravity="end"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Nút thanh toán -->
-            <Button
-                android:id="@+id/btnCheckout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Thanh toán"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#E53935" />
+                android:padding="12dp" />
         </LinearLayout>
-    </ScrollView>
 
-    <!-- Bottom nav -->
+        <TextView
+            android:id="@+id/tvDeliveryAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📍 Địa chỉ giao hàng: 123 Nguyễn Trãi, Hà Nội"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:background="@drawable/bg_edittext"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Tổng tiền -->
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số tiền cần thanh toán : 0 VNĐ"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#E53935"
+            android:gravity="end"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Nút thanh toán -->
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Thanh toán"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#E53935" />
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -99,3 +104,4 @@
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled" />
 </RelativeLayout>
+

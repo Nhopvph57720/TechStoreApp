@@ -21,4 +21,11 @@ public class FireBaseHelper {
                 .getInstance("https://techstoreapp-de25c-default-rtdb.asia-southeast1.firebasedatabase.app")
                 .getReference("users");
     }
+
+    public static DatabaseReference getCartRef(String uid) {
+        return FirebaseDatabase
+                .getInstance("https://techstoreapp-de25c-default-rtdb.asia-southeast1.firebasedatabase.app")
+                .getReference("Cart").child(uid);
+    }
+
 }
