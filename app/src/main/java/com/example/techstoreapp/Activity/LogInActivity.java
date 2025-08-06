@@ -133,13 +133,23 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    // User data exists, proceed to HomeActivity
+                                    Boolean isAdmin = dataSnapshot.child("isAdmin").getValue(Boolean.class);
                                     Toast.makeText(LogInActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
+
+                                    Intent intent;
+                                    if (Boolean.TRUE.equals(isAdmin)) {
+                                        // 👉 Admin → mở màn hình AdminDashboardActivity
+                                        intent = new Intent(LogInActivity.this, AdminDashboardActivity.class);
+                                    } else {
+                                        // 👉 User thường → mở HomeActivity
+                                        intent = new Intent(LogInActivity.this, HomeActivity.class);
+                                    }
+
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     finish();
-                                } else {
+                                }
+                                else {
                                     // User data doesn't exist in database, sign out and show error
                                     mAuth.signOut();
                                     Toast.makeText(LogInActivity.this, "Dữ liệu người dùng không tồn tại!", Toast.LENGTH_LONG).show();

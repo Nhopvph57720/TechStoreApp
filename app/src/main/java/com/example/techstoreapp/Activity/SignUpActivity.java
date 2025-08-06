@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
+import com.example.techstoreapp.Model.User;
 import com.example.techstoreapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -98,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         String uid = user.getUid();
-                        UserModel userModel = new UserModel(name, email);
+                        User userModel = new User(name, email);
                         databaseRef.child(uid).setValue(userModel)
                                 .addOnSuccessListener(unused -> {
                                     // Sign out để user phải đăng nhập lại
@@ -130,17 +131,5 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setText("Đăng ký");
     }
 
-    public static class UserModel {
-        public String name;
-        public String email;
 
-        public UserModel() {
-            // Firebase cần constructor rỗng
-        }
-
-        public UserModel(String name, String email) {
-            this.name = name;
-            this.email = email;
-        }
-    }
 }
