@@ -1,7 +1,14 @@
 package com.example.techstoreapp.Activity;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +29,6 @@ import com.example.techstoreapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -33,6 +39,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private AdminProductAdapter adapter;
     private List<Product> productList = new ArrayList<>();
     private List<Product> allProducts = new ArrayList<>();
+    private Button btnAddProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +54,21 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
 
         Toast.makeText(this, "Xin chào Admin!", Toast.LENGTH_SHORT).show();
-        ///
 
-        // Danh sách các danh mục
+        // Ánh xạ
+        btnAddProduct = findViewById(R.id.btn_add_product);
+        rcvSanPham = findViewById(R.id.rcv_sanpham);
+        rcvSanPham.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new AdminProductAdapter(this, productList);
+        rcvSanPham.setAdapter(adapter);
+
+        // Gọi API load sản phẩm
+        loadProductsFromFirebase();
+
+        // Bắt sự kiện nút thêm
+        btnAddProduct.setOnClickListener(v -> showAddProductDialog());
+
+        // Bắt sự kiện chọn danh mục
         TextView tvLaptop = findViewById(R.id.tvLaptop);
         TextView tvDienThoai = findViewById(R.id.tvDienThoai);
         TextView tvTaiNghe = findViewById(R.id.tvTaiNghe);
@@ -60,30 +79,21 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         for (TextView category : categories) {
             category.setOnClickListener(v -> {
-                // Reset tất cả về mặc định
+                // Reset tất cả
                 for (TextView c : categories) {
                     c.setBackgroundResource(R.drawable.bg_category_chip);
                     c.setTextColor(ContextCompat.getColor(this, R.color.red_E00));
                 }
 
-                // Gán màu đỏ cho chip đang được click
+                // Gán màu đỏ cho mục được chọn
                 category.setBackgroundResource(R.drawable.bg_category_chip_selected);
                 category.setTextColor(Color.WHITE);
 
-                // TODO: nếu cần lọc sản phẩm thì làm ở đây
+                // Lọc theo danh mục
                 String selected = category.getText().toString();
                 filterByCategory(selected);
             });
         }
-
-        ///
-        rcvSanPham = findViewById(R.id.rcv_sanpham);
-        rcvSanPham.setLayoutManager(new LinearLayoutManager(this)); // Dọc
-
-        adapter = new AdminProductAdapter(this, productList);
-        rcvSanPham.setAdapter(adapter);
-
-        loadProductsFromFirebase();
     }
 
     private void loadProductsFromFirebase() {
@@ -97,12 +107,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 for (DataSnapshot item : snapshot.getChildren()) {
                     Product product = item.getValue(Product.class);
                     if (product != null) {
-                        allProducts.add(product);   // lưu vào danh sách đầy đủ
-                        productList.add(product);   // hiển thị ban đầu
+                        allProducts.add(product);
+                        productList.add(product);
                     }
                 }
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -134,5 +143,52 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         Toast.makeText(AdminDashboardActivity.this, "Lỗi lọc: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void showAddProductDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_product, null);
+        builder.setView(view);
+
+        EditText edtName = view.findViewById(R.id.edtName);
+        EditText edtPrice = view.findViewById(R.id.edtPrice);
+        EditText edtImageUrl = view.findViewById(R.id.edtImageUrl);
+        Spinner spnCategory = view.findViewById(R.id.spnCategory);
+        EditText edtDescription = view.findViewById(R.id.edtDescription);
+
+        String[] categories = {"Laptop", "Điện thoại", "Tai nghe", "Tablet", "Bàn phím"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnCategory.setAdapter(adapter);
+
+        builder.setTitle("Thêm sản phẩm mới");
+
+        builder.setPositiveButton("Thêm", (dialog, which) -> {
+            String name = edtName.getText().toString().trim();
+            String priceStr = edtPrice.getText().toString().trim();
+            String imageUrl = edtImageUrl.getText().toString().trim();
+            String category = spnCategory.getSelectedItem().toString();
+            String description = edtDescription.getText().toString().trim();
+
+            if (name.isEmpty() || priceStr.isEmpty() || imageUrl.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int price = Integer.parseInt(priceStr);
+            DatabaseReference dbRef = FireBaseHelper.getProductsRef();
+            String id = dbRef.push().getKey();
+
+            Product product = new Product(id, name, price, imageUrl, category, description);
+
+            dbRef.child(id).setValue(product)
+                    .addOnSuccessListener(unused -> Toast.makeText(this, "Đã thêm sản phẩm!", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        });
+
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
