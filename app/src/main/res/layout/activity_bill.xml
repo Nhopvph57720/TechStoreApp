@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white_000">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tvBillId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mã hoá đơn: #123"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"
+        android:textColor="#000000"/>
+
+    <!-- Tên người dùng -->
+    <TextView
+        android:id="@+id/tvBillName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="👤 Nguyễn Văn A"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#333333"/>
+
+    <!-- Số điện thoại -->
+    <TextView
+        android:id="@+id/tvBillPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📞 0123456789"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#333333"/>
+
+    <!-- Địa chỉ -->
+    <TextView
+        android:id="@+id/tvBillAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📍 Địa chỉ giao hàng: 123 Nguyễn Trãi"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#333333"/>
+
+    <!-- Thời gian đặt -->
+    <TextView
+        android:id="@+id/tvBillTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🕒 Ngày đặt: 07/08/2025 10:30"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#333333"/>
+
+    <!-- Tổng tiền -->
+    <TextView
+        android:id="@+id/tvBillTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tổng tiền: 1.000.000 VNĐ"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#E53935"
+        android:gravity="end"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Danh sách sản phẩm -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvBillItems"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"/>
+
+    <!-- Nút quay về -->
+    <Button
+        android:id="@+id/btnBackHome"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Quay về trang chủ"
+        android:backgroundTint="#2196F3"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"/>
+</LinearLayout>

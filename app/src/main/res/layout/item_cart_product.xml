@@ -13,10 +13,9 @@
         android:id="@+id/imgProductThumb"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:scaleType="centerCrop"
-        />
+        android:scaleType="centerCrop" />
 
-    <!-- Thông tin -->
+    <!-- Thông tin sản phẩm -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,4 +56,18 @@
             android:textStyle="bold"
             android:textSize="13sp" />
     </LinearLayout>
+
+    <!-- Nút Hủy đơn hàng -->
+    <Button
+        android:id="@+id/btnCancelOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hủy đơn hàng"
+        android:textSize="12sp"
+        android:textColor="@android:color/background_dark"
+        android:backgroundTint="#D7D6D6"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/be_vietnam_pro_semibold" />
 </LinearLayout>

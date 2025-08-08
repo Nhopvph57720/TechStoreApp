@@ -18,6 +18,17 @@
         android:padding="12dp"
         android:clipToPadding="false" />
 
+    <TextView
+        android:id="@+id/tvEmptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Không có đơn hàng nào"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
     <!-- Phần thông tin + nút thanh toán -->
     <LinearLayout
         android:id="@+id/checkoutSection"

@@ -2,6 +2,8 @@ package com.example.techstoreapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.techstoreapp.Adapter.CartAdapter;
 import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
+import com.example.techstoreapp.Model.Bill;
 import com.example.techstoreapp.Model.CartItem;
 import com.example.techstoreapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +39,8 @@ public class Cart extends AppCompatActivity {
     private TextView tvTotalPrice, tvNameUser, tvPhoneUser, tvDeliveryAddress;
     private DatabaseReference cartRef, userRef;
     private FirebaseAuth mAuth;
+    private Button btnCheckout;
+    private String currentUserName, currentUserPhone, currentUserAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,49 @@ public class Cart extends AppCompatActivity {
         tvPhoneUser = findViewById(R.id.tvPhoneUser);
         tvDeliveryAddress = findViewById(R.id.tvDeliveryAddress);
 
+        ///
+        btnCheckout = findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(v -> {
+            if (cartList.isEmpty()) {
+                Toast.makeText(Cart.this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (currentUserName == null || currentUserPhone == null || currentUserAddress == null) {
+                Toast.makeText(Cart.this, "Thông tin người dùng chưa sẵn sàng", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            long total = 0;
+            for (CartItem item : cartList) {
+                total += item.getTotalPrice();
+            }
+
+            String uid = mAuth.getCurrentUser().getUid();
+            String billId = FireBaseHelper.getBillsRef().push().getKey();
+            Bill bill = new Bill(
+                    billId, uid,
+                    currentUserName,
+                    currentUserPhone,
+                    currentUserAddress,
+                    total,
+                    new ArrayList<>(cartList),
+                    System.currentTimeMillis()
+            );
+
+            FireBaseHelper.getBillsRef().child(billId).setValue(bill).addOnSuccessListener(unused -> {
+                FireBaseHelper.getCartRef(uid).removeValue();
+
+                Intent intent = new Intent(Cart.this, BillActivity.class);
+                intent.putExtra("billId", billId);
+                startActivity(intent);
+                finish();
+            }).addOnFailureListener(e -> {
+                Toast.makeText(Cart.this, "Lỗi khi thanh toán", Toast.LENGTH_SHORT).show();
+            });
+        });
+
+
         // Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
@@ -100,18 +148,32 @@ public class Cart extends AppCompatActivity {
     }
 
     private void loadCartItems() {
+        TextView tvEmptyCart = findViewById(R.id.tvEmptyCart); // Thêm dòng này để ánh xạ
+
         cartRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cartList.clear();
                 int total = 0;
+
                 for (DataSnapshot itemSnap : snapshot.getChildren()) {
                     CartItem item = itemSnap.getValue(CartItem.class);
                     if (item != null) {
                         cartList.add(item);
-                        total += item.getTotalPrice(); // Dùng hàm getTotalPrice() trong CartItem
+                        total += item.getTotalPrice(); // Dùng hàm getTotalPrice()
                     }
                 }
+
+                if (cartList.isEmpty()) {
+                    // ✅ Không có đơn hàng
+                    tvEmptyCart.setVisibility(View.VISIBLE);
+                    rcvCartItems.setVisibility(View.GONE);
+                } else {
+                    // ✅ Có đơn hàng
+                    tvEmptyCart.setVisibility(View.GONE);
+                    rcvCartItems.setVisibility(View.VISIBLE);
+                }
+
                 cartAdapter.notifyDataSetChanged();
                 tvTotalPrice.setText("Số tiền cần thanh toán : " + String.format("%,d VNĐ", total));
             }
@@ -123,18 +185,19 @@ public class Cart extends AppCompatActivity {
         });
     }
 
+
     private void loadUserInfo() {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String name = snapshot.child("name").getValue(String.class);
-                    String phone = snapshot.child("phone").getValue(String.class);
-                    String address = snapshot.child("address").getValue(String.class);
+                    currentUserName = snapshot.child("name").getValue(String.class);
+                    currentUserPhone = snapshot.child("phone").getValue(String.class);
+                    currentUserAddress = snapshot.child("address").getValue(String.class);
 
-                    tvNameUser.setText("👤 " + (name != null ? name : ""));
-                    tvPhoneUser.setText("📞 " + (phone != null ? phone : ""));
-                    tvDeliveryAddress.setText("📍 Địa chỉ giao hàng: " + (address != null ? address : ""));
+                    tvNameUser.setText("👤 " + (currentUserName != null ? currentUserName : ""));
+                    tvPhoneUser.setText("📞 " + (currentUserPhone != null ? currentUserPhone : ""));
+                    tvDeliveryAddress.setText("📍 Địa chỉ giao hàng: " + (currentUserAddress != null ? currentUserAddress : ""));
                 }
             }
 
@@ -144,5 +207,6 @@ public class Cart extends AppCompatActivity {
             }
         });
     }
+
 }
 

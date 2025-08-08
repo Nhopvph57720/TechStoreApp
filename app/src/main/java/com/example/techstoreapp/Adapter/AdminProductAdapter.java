@@ -51,18 +51,14 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         holder.tvPrice.setText(String.format("%,d₫", product.getPrice()));
         Glide.with(context).load(product.getImageUrl()).into(holder.imgProduct);
 
-        // Xử lý nút Sửa
-        holder.btnEdit.setOnClickListener(v -> showEditDialog(product, position));
-
-        // Xử lý nút Xóa
-        holder.btnDelete.setOnClickListener(v -> showDeleteDialog(product, position));
+        holder.btnEdit.setOnClickListener(v -> showEditDialog(product));
+        holder.btnDelete.setOnClickListener(v -> showDeleteDialog(product));
     }
 
-    private void showEditDialog(Product product, int position) {
+    private void showEditDialog(Product product) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Sửa sản phẩm");
 
-        // Tạo layout cho dialog
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_product, null);
 
         EditText edtName = dialogView.findViewById(R.id.edt_product_name);
@@ -71,7 +67,6 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         EditText edtCategory = dialogView.findViewById(R.id.edt_product_category);
         EditText edtDescription = dialogView.findViewById(R.id.edt_product_description);
 
-        // Điền dữ liệu hiện tại
         edtName.setText(product.getName());
         edtPrice.setText(String.valueOf(product.getPrice()));
         edtImageUrl.setText(product.getImageUrl());
@@ -87,12 +82,10 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
             String category = edtCategory.getText().toString().trim();
             String description = edtDescription.getText().toString().trim();
 
-            // Kiểm tra dữ liệu
             if (TextUtils.isEmpty(name)) {
                 Toast.makeText(context, "Vui lòng nhập tên sản phẩm", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             if (TextUtils.isEmpty(priceStr)) {
                 Toast.makeText(context, "Vui lòng nhập giá sản phẩm", Toast.LENGTH_SHORT).show();
                 return;
@@ -115,8 +108,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                 return;
             }
 
-            // Cập nhật sản phẩm
-            updateProduct(product.getId(), name, price, imageUrl, category, description, position);
+            updateProduct(product.getId(), name, price, imageUrl, category, description);
         });
 
         builder.setNegativeButton("Hủy", null);
@@ -125,7 +117,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         dialog.show();
     }
 
-    private void updateProduct(String productId, String name, int price, String imageUrl, String category, String description, int position) {
+    private void updateProduct(String productId, String name, int price, String imageUrl, String category, String description) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
         updates.put("price", price);
@@ -137,44 +129,56 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(context, "Cập nhật sản phẩm thành công", Toast.LENGTH_SHORT).show();
 
-                    // Cập nhật dữ liệu local
-                    Product updatedProduct = productList.get(position);
-                    updatedProduct.setName(name);
-                    updatedProduct.setPrice(price);
-                    updatedProduct.setImageUrl(imageUrl);
-                    updatedProduct.setCategory(category);
-                    updatedProduct.setDescription(description);
+                    int index = findIndexById(productId);
+                    if (index != -1) {
+                        Product updatedProduct = productList.get(index);
+                        updatedProduct.setName(name);
+                        updatedProduct.setPrice(price);
+                        updatedProduct.setImageUrl(imageUrl);
+                        updatedProduct.setCategory(category);
+                        updatedProduct.setDescription(description);
 
-                    notifyItemChanged(position);
+                        notifyItemChanged(index);
+                    }
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(context, "Lỗi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private void showDeleteDialog(Product product, int position) {
+    private void showDeleteDialog(Product product) {
         new AlertDialog.Builder(context)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa sản phẩm \"" + product.getName() + "\"?")
-                .setPositiveButton("Xóa", (dialog, which) -> deleteProduct(product.getId(), position))
+                .setPositiveButton("Xóa", (dialog, which) -> deleteProduct(product.getId()))
                 .setNegativeButton("Hủy", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
-    private void deleteProduct(String productId, int position) {
+    private void deleteProduct(String productId) {
         productsRef.child(productId).removeValue()
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(context, "Đã xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
-
-                    // Xóa khỏi danh sách local và cập nhật RecyclerView
-                    productList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, productList.size());
+                    int index = findIndexById(productId);
+                    if (index != -1) {
+                        productList.remove(index);
+                        notifyItemRemoved(index);
+                        notifyItemRangeChanged(index, productList.size());
+                    }
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(context, "Lỗi xóa sản phẩm: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private int findIndexById(String productId) {
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getId().equals(productId)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
