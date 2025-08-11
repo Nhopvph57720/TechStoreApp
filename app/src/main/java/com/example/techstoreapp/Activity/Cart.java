@@ -65,6 +65,13 @@ public class Cart extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
+            } else if (id == R.id.nav_cart) {
+                return true; // Đang ở giỏ hàng
+            } else if (id == R.id.nav_ordersuser) {
+                startActivity(new Intent(this, OrdersUserActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
             } else if (id == R.id.nav_user) {
                 startActivity(new Intent(this, UserProfile.class));
                 overridePendingTransition(0, 0);
@@ -73,6 +80,8 @@ public class Cart extends AppCompatActivity {
             }
             return false;
         });
+
+
 
         // Setup RecyclerView
         rcvCartItems = findViewById(R.id.rcvCartItems);
@@ -105,28 +114,36 @@ public class Cart extends AppCompatActivity {
             }
 
             String uid = mAuth.getCurrentUser().getUid();
-            String billId = FireBaseHelper.getBillsRef().push().getKey();
+            String billId = FireBaseHelper.getBillsRef().push().getKey(); // billId chung, không theo uid
+
             Bill bill = new Bill(
-                    billId, uid,
+                    billId,
+                    uid,
                     currentUserName,
                     currentUserPhone,
                     currentUserAddress,
                     total,
                     new ArrayList<>(cartList),
-                    System.currentTimeMillis()
+                    System.currentTimeMillis(),
+                    "pending"
             );
 
-            FireBaseHelper.getBillsRef().child(billId).setValue(bill).addOnSuccessListener(unused -> {
-                FireBaseHelper.getCartRef(uid).removeValue();
-
-                Intent intent = new Intent(Cart.this, BillActivity.class);
-                intent.putExtra("billId", billId);
-                startActivity(intent);
-                finish();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(Cart.this, "Lỗi khi thanh toán", Toast.LENGTH_SHORT).show();
-            });
+            FireBaseHelper.getBillsRef()
+                    .child(billId) // lưu trực tiếp vào Bill/<billId>
+                    .setValue(bill)
+                    .addOnSuccessListener(unused -> {
+                        FireBaseHelper.getCartRef(uid).removeValue();
+                        Toast.makeText(Cart.this, "Đơn hàng đã gửi, chờ admin xác nhận", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Cart.this, HomeActivity.class));
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(Cart.this, "Lỗi khi thanh toán", Toast.LENGTH_SHORT).show();
+                    });
         });
+
+
+
 
 
         // Firebase Auth

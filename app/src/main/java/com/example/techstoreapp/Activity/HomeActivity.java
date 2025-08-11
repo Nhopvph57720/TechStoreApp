@@ -39,6 +39,7 @@ import com.example.techstoreapp.Model.Product;
 import com.example.techstoreapp.Model.Trending;
 import com.example.techstoreapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -211,10 +212,18 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Cart.class));
                 overridePendingTransition(0, 0);
                 return true;
-            } else if (id == R.id.nav_user) {
+            }else if (id == R.id.nav_ordersuser) {
+                startActivity(new Intent(this, OrdersUserActivity.class));
+
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+            else if (id == R.id.nav_user) {
                 startActivity(new Intent(this, UserProfile.class));
                 overridePendingTransition(0, 0);
                 return true;
+
             }
 
             return false;

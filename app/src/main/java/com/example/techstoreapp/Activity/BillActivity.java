@@ -21,6 +21,8 @@ import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
 import com.example.techstoreapp.Model.Bill;
 import com.example.techstoreapp.Model.CartItem;
 import com.example.techstoreapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -38,12 +40,14 @@ public class BillActivity extends AppCompatActivity {
     private List<CartItem> billItems = new ArrayList<>();
     private CartAdapter adapter;
     private Button btnBackToHome;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
 
+        // Ánh xạ view
         tvBillId = findViewById(R.id.tvBillId);
         tvName = findViewById(R.id.tvBillName);
         tvPhone = findViewById(R.id.tvBillPhone);
@@ -52,48 +56,90 @@ public class BillActivity extends AppCompatActivity {
         tvTime = findViewById(R.id.tvBillTime);
         rcvBillItems = findViewById(R.id.rcvBillItems);
         btnBackToHome = findViewById(R.id.btnBackHome);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // Setup RecyclerView
         adapter = new CartAdapter(this, billItems);
         rcvBillItems.setLayoutManager(new LinearLayoutManager(this));
         rcvBillItems.setAdapter(adapter);
 
-        String billId = getIntent().getStringExtra("billId");
-        if (billId == null) {
-            finish();
-            return;
-        }
-
-        FireBaseHelper.getBillsRef().child(billId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Bill bill = snapshot.getValue(Bill.class);
-                if (bill != null) {
-                    tvBillId.setText("Mã hoá đơn: " + bill.getId());
-                    tvName.setText("👤 " + bill.getName());
-                    tvPhone.setText("📞 " + bill.getPhone());
-                    tvAddress.setText("📍 " + bill.getAddress());
-                    tvTotal.setText("Tổng tiền: " + String.format("%,d VNĐ", bill.getTotalAmount()));
-                    tvTime.setText("Ngày đặt: " + new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date(bill.getTimestamp())));
-
-                    billItems.clear();
-                    billItems.addAll(bill.getItems());
-                    adapter.notifyDataSetChanged();
-                }
+        // Chọn icon Đơn hàng
+        bottomNavigationView.setSelectedItemId(R.id.nav_ordersuser);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_cart) {
+                startActivity(new Intent(this, Cart.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_ordersuser) {
+                return true; // đang ở đây rồi
+            } else if (id == R.id.nav_user) {
+                startActivity(new Intent(this, UserProfile.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(BillActivity.this, "Lỗi tải hóa đơn", Toast.LENGTH_SHORT).show();
-            }
+            return false;
         });
 
+        // Load đơn mới nhất
+        loadLatestBill();
 
-        btnBackToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BillActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
+        // Nút về Home
+        btnBackToHome.setOnClickListener(v -> {
+            startActivity(new Intent(BillActivity.this, HomeActivity.class));
+            overridePendingTransition(0, 0);
+            finish();
         });
     }
+
+    private void loadLatestBill() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FireBaseHelper.getBillsRef()
+                .orderByChild("userId").equalTo(uid)
+                .limitToLast(1) // lấy 1 đơn mới nhất
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            Toast.makeText(BillActivity.this, "Bạn chưa có đơn hàng nào", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        for (DataSnapshot billSnap : snapshot.getChildren()) {
+                            Bill bill = billSnap.getValue(Bill.class);
+                            if (bill != null) {
+                                showBillDetails(bill);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(BillActivity.this, "Lỗi tải đơn hàng", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void showBillDetails(Bill bill) {
+        tvBillId.setText("Mã hoá đơn: " + bill.getId());
+        tvName.setText("👤 " + bill.getName());
+        tvPhone.setText("📞 " + bill.getPhone());
+        tvAddress.setText("📍 " + bill.getAddress());
+        tvTotal.setText("Tổng tiền: " + String.format("%,d VNĐ", bill.getTotalAmount()));
+        tvTime.setText("Ngày đặt: " +
+                new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date(bill.getTimestamp())));
+
+        billItems.clear();
+        billItems.addAll(bill.getItems());
+        adapter.notifyDataSetChanged();
+    }
 }
+
+

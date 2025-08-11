@@ -1,6 +1,7 @@
 package com.example.techstoreapp.Activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import com.example.techstoreapp.Adapter.AdminProductAdapter;
 import com.example.techstoreapp.FirebaseHelper.FireBaseHelper;
 import com.example.techstoreapp.Model.Product;
 import com.example.techstoreapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,13 +65,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
         adapter = new AdminProductAdapter(this, productList);
         rcvSanPham.setAdapter(adapter);
 
-        // Gọi API load sản phẩm
+        // Load sản phẩm
         loadProductsFromFirebase();
 
-        // Bắt sự kiện nút thêm
+        // Thêm sản phẩm
         btnAddProduct.setOnClickListener(v -> showAddProductDialog());
 
-        // Bắt sự kiện chọn danh mục
+        // Xử lý chọn danh mục
         TextView tvLaptop = findViewById(R.id.tvLaptop);
         TextView tvDienThoai = findViewById(R.id.tvDienThoai);
         TextView tvTaiNghe = findViewById(R.id.tvTaiNghe);
@@ -76,29 +79,55 @@ public class AdminDashboardActivity extends AppCompatActivity {
         TextView tvBanPhim = findViewById(R.id.tvBanPhim);
 
         TextView[] categories = {tvLaptop, tvDienThoai, tvTaiNghe, tvTablet, tvBanPhim};
-
         for (TextView category : categories) {
             category.setOnClickListener(v -> {
-                // Reset tất cả
+                // Reset màu
                 for (TextView c : categories) {
                     c.setBackgroundResource(R.drawable.bg_category_chip);
                     c.setTextColor(ContextCompat.getColor(this, R.color.red_E00));
                 }
-
-                // Gán màu đỏ cho mục được chọn
+                // Mục được chọn
                 category.setBackgroundResource(R.drawable.bg_category_chip_selected);
                 category.setTextColor(Color.WHITE);
-
-                // Lọc theo danh mục
-                String selected = category.getText().toString();
-                filterByCategory(selected);
+                // Lọc danh mục
+                filterByCategory(category.getText().toString());
             });
         }
+
+        // Xử lý Bottom Navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                return true;
+            }
+            else if (id == R.id.nav_ordersadmin) {
+                startActivity(new Intent(this, AdminOrdersActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+            else if (id == R.id.nav_logout) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Đăng xuất")
+                        .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                        .setPositiveButton("Có", (dialog, which) -> {
+                            FirebaseAuth.getInstance().signOut();
+                            startActivity(new Intent(this, LogInActivity.class));
+                            finish();
+                        })
+                        .setNegativeButton("Không", null)
+                        .show();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void loadProductsFromFirebase() {
         DatabaseReference dbRef = FireBaseHelper.getProductsRef();
-
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -123,7 +152,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void filterByCategory(String categoryName) {
         DatabaseReference dbRef = FireBaseHelper.getProductsRef();
-
         dbRef.orderByChild("category").equalTo(categoryName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -180,7 +208,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
             String id = dbRef.push().getKey();
 
             Product product = new Product(id, name, price, imageUrl, category, description);
-
             dbRef.child(id).setValue(product)
                     .addOnSuccessListener(unused -> Toast.makeText(this, "Đã thêm sản phẩm!", Toast.LENGTH_SHORT).show())
                     .addOnFailureListener(e -> Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -192,3 +219,4 @@ public class AdminDashboardActivity extends AppCompatActivity {
         dialog.show();
     }
 }
+

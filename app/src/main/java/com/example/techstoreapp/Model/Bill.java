@@ -11,11 +11,13 @@ public class Bill {
     private long totalAmount;
     private List<CartItem> items;
     private long timestamp;
+    private String status; // pending, confirmed
+
 
     public Bill() {
     }
 
-    public Bill(String id, String userId, String name, String phone, String address, long totalAmount, List<CartItem> items, long timestamp) {
+    public Bill(String id, String userId, String name, String phone, String address, long totalAmount, List<CartItem> items, long timestamp, String status) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -24,6 +26,7 @@ public class Bill {
         this.totalAmount = totalAmount;
         this.items = items;
         this.timestamp = timestamp;
+        this.status = status;
     }
 
     public String getId() {
@@ -88,6 +91,14 @@ public class Bill {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

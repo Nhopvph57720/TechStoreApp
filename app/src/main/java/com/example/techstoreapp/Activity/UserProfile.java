@@ -91,18 +91,26 @@ public class UserProfile extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 startActivity(new Intent(this, HomeActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 return true;
             } else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, Cart.class));
                 overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_ordersuser) {
+                startActivity(new Intent(this, OrdersUserActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
                 return true;
             } else if (id == R.id.nav_user) {
-                // Already here
+                // Đang ở UserProfile
                 return true;
             }
 
             return false;
         });
+
     }
 
     @Override

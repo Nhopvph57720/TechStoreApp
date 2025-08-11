@@ -98,7 +98,7 @@
             android:id="@+id/btnCheckout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Thanh toán"
+            android:text="Đặt hàng"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"

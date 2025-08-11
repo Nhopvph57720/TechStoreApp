@@ -6,9 +6,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.example.techstoreapp.Model.Product;
 import com.example.techstoreapp.R;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,14 +67,25 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         EditText edtName = dialogView.findViewById(R.id.edt_product_name);
         EditText edtPrice = dialogView.findViewById(R.id.edt_product_price);
         EditText edtImageUrl = dialogView.findViewById(R.id.edt_product_image);
-        EditText edtCategory = dialogView.findViewById(R.id.edt_product_category);
+        Spinner spinnerCategory = dialogView.findViewById(R.id.spinner_product_category); // Spinner thay vì EditText
         EditText edtDescription = dialogView.findViewById(R.id.edt_product_description);
 
         edtName.setText(product.getName());
         edtPrice.setText(String.valueOf(product.getPrice()));
         edtImageUrl.setText(product.getImageUrl());
-        edtCategory.setText(product.getCategory());
         edtDescription.setText(product.getDescription());
+
+        // Danh sách danh mục
+        String[] categories = {"Laptop", "Điện thoại", "Tai nghe", "Tablet", "Bàn phím"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+
+        // Chọn đúng danh mục của sản phẩm hiện tại
+        int categoryPosition = Arrays.asList(categories).indexOf(product.getCategory());
+        if (categoryPosition >= 0) {
+            spinnerCategory.setSelection(categoryPosition);
+        }
 
         builder.setView(dialogView);
 
@@ -79,7 +93,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
             String name = edtName.getText().toString().trim();
             String priceStr = edtPrice.getText().toString().trim();
             String imageUrl = edtImageUrl.getText().toString().trim();
-            String category = edtCategory.getText().toString().trim();
+            String category = spinnerCategory.getSelectedItem().toString(); // Lấy từ Spinner
             String description = edtDescription.getText().toString().trim();
 
             if (TextUtils.isEmpty(name)) {
@@ -103,11 +117,6 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                 return;
             }
 
-            if (TextUtils.isEmpty(category)) {
-                Toast.makeText(context, "Vui lòng nhập danh mục", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             updateProduct(product.getId(), name, price, imageUrl, category, description);
         });
 
@@ -116,6 +125,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
     private void updateProduct(String productId, String name, int price, String imageUrl, String category, String description) {
         Map<String, Object> updates = new HashMap<>();
