@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TechStoreApp"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.AdminOrderDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.OrdersUserActivity"
             android:exported="false" />
         <activity

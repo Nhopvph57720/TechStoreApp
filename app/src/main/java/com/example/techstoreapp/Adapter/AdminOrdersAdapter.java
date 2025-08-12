@@ -1,6 +1,7 @@
 package com.example.techstoreapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.techstoreapp.Activity.AdminOrderDetailActivity;
 import com.example.techstoreapp.Model.Bill;
 import com.example.techstoreapp.R;
 import com.google.firebase.database.FirebaseDatabase;
@@ -51,6 +53,13 @@ public class AdminOrdersAdapter extends RecyclerView.Adapter<AdminOrdersAdapter.
         // Convert timestamp to date string
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         holder.tvDate.setText("🗓 " + sdf.format(new Date(bill.getTimestamp())));
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdminOrderDetailActivity.class);
+            intent.putExtra("billId", bill.getId()); // Gửi billId sang
+            context.startActivity(intent);
+        });
+
     }
 
     @Override

@@ -4,43 +4,93 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="6dp"
-    android:layout_marginHorizontal="8dp"
+    android:layout_marginHorizontal="10dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="14dp"
+    app:cardElevation="5dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E0E0E0">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="14dp"
+        android:background="@android:color/white">
 
-        <TextView
-            android:id="@+id/tvOrderId"
-            android:layout_width="wrap_content"
+        <!-- Mã đơn hàng -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mã: #12345"
-            android:textStyle="bold"
-            android:textSize="16sp"
-             />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
 
-        <TextView
-            android:id="@+id/tvOrderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày: 11/08/2025 14:30"
-            android:textSize="14sp"
-             />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_info_details"
+                android:tint="#2196F3"
+                android:layout_marginEnd="6dp" />
 
-        <TextView
-            android:id="@+id/tvOrderTotal"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mã: #12345"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#212121" />
+        </LinearLayout>
+
+        <!-- Ngày đặt -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tổng: 150,000 VNĐ"
-            android:textSize="15sp"
-            android:textStyle="bold"
-             />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_today"
+                android:tint="#4CAF50"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tvOrderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày: 11/08/2025 14:30"
+                android:textSize="14sp"
+                android:textColor="#424242" />
+        </LinearLayout>
+
+        <!-- Tổng tiền -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                android:tint="#FF9800"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tvOrderTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng: 150,000 VNĐ"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#FF5722" />
+        </LinearLayout>
 
     </LinearLayout>
 

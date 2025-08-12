@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_edittext"
+    android:gravity="center_vertical">
+
+    <!-- Ảnh sản phẩm -->
+    <ImageView
+        android:id="@+id/imgProductThumb"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Thông tin sản phẩm -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tvProductNameCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên sản phẩm"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvUnitPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá: 500.000 VNĐ"
+            android:textColor="#555555"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvQuantityCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số lượng: 2"
+            android:textColor="#555555"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvItemTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền: 1.000.000 VNĐ"
+            android:textColor="#E53935"
+            android:textStyle="bold"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</LinearLayout>
